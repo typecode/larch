@@ -1,0 +1,17 @@
+{
+  "name": "larch",
+  "version": "0.1.0",
+  "homepage": "https://github.com/typecode/larch",
+  "authors": [
+    "Lev Kanter <levkanter@gmail.com>"
+  ],
+  "description": "Form UI library",
+  "main": "js/larch/larch.js",
+  "license": "MIT",
+  "private": true,
+  "dependencies": {
+    "jquery": "1.10.2",
+    "underscore": "1.5.2",
+    "requirejs": "2.1.8"
+  }
+}
