@@ -1,4 +1,4 @@
 larch
 =====
 
-Form UI framework
+Form UI library
