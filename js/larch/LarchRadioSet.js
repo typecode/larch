@@ -9,7 +9,7 @@ define([
     'use strict';
 
     /*
-     * Field type representing a set of radios
+     * Field type representing a set of radios.
      *
      * DOM
      *

@@ -336,4 +336,5 @@ define(['jquery', 'larch'], function($, larch) {
     };
 
     return MenuContainer;
+
 });

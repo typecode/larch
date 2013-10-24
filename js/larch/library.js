@@ -1,3 +1,11 @@
+/*
+ * Requiring this module effectively loads the all the core
+ * Larch field types and extensions, which is useful when
+ * using larch.new_instance (from larch/larch.js) to instantiate a group
+ * of fields (since larch.new_instance will only detect the right
+ * type of field if that field's module has already been required).
+ */
+ 
 define([
     // field types
     'larch/LarchInput',
@@ -20,14 +28,6 @@ define([
     LarchHidden,
     Autocomplete) {
     'use strict';
-
-    /*
-     * Requiring this module effectively loads the all the core
-     * Larch field types and extensions, which is useful when
-     * using larch.new_instance (from larch/core) to instantiate a group
-     * of fields (since larch.new_instance will only detect the right
-     * type of field if that field's module has already been required).
-     */
 
      var library = {
         types: {},

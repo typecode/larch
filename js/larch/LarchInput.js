@@ -11,6 +11,8 @@ define([
     /*
      * Field type representing a text-based input. The actual form element
      * can be an <input> with type='text', or type='password', <textarea>, etc.
+     * TODO automatic validation for specific input types, like type='number',
+     * type='email', etc.
      *
      * DOM
      *

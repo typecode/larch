@@ -456,7 +456,7 @@ define([
 
     /*
      * Name of the data value used to represent a CSRF token
-     * in a form POST
+     * in a form POST (this is the default name in Django)
      */
     LarchForm.CSRF_TOKEN_NAME = 'csrfmiddlewaretoken';
 

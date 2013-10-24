@@ -64,8 +64,12 @@ define([
                 return self;
             },
 
-            set_enabled: function() { return self; },
-            focus: function() { return self; },
+            set_enabled: function() {
+                return self;
+            },
+            focus: function() {
+                return self;
+            },
             _handle_focus: $.noop,
             _handle_blur: $.noop
         };

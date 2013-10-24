@@ -5,6 +5,10 @@ define(['jquery', 'larch'], function($, larch) {
 
     validation.ANONYMOUS_ERROR_MESSAGE = '(annonymous error)';
 
+    /*
+     * Holds all the validation states a field can be in. A field
+     * is only ever in one of these states at a given time.
+     */
     validation.states = {
         UNDETERMINED: 'undetermined',
         VALID:        'valid',
@@ -12,13 +16,13 @@ define(['jquery', 'larch'], function($, larch) {
     };
 
     /*
-     * A field validator is any object with an 'validate' function
+     * A field validator is any object with a 'validate' function
      * and an optional 'name' and 'error_message' string. When a field
      * is being validated, the 'validate' function of all validators
      * associated with it is called, and passed as the first argument
      * the field instance. If the validator determines that the field
      * is not in a valid state, 'validate()' should return false.
-     * If the validator does supply 'error_message', then that will be
+     * If the validator supplies 'error_message', then that will be
      * used to explain why the field failed its 'validate' test.
      *
      * DummyFieldValidator is a constructor for a field validator whose
@@ -28,7 +32,7 @@ define(['jquery', 'larch'], function($, larch) {
      */
     validation.DummyFieldValidator = function() {
         this.name = 'dummy';
-        this.validate = function(field) {
+        this.validate = function(field, aux_data) {
             return true;
         };
         this.error_message = 'Invalid';
@@ -64,6 +68,9 @@ define(['jquery', 'larch'], function($, larch) {
      * via validation.get_or_create_fv()
      */
     validation.fv_factory = {
+        /*
+         * Validate against a regular expression (defined by pattern and modifiers)
+         */
         pattern: {
             create: function(pattern, modifiers) {
                 var re = new RegExp(pattern, modifiers);

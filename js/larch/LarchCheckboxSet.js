@@ -66,7 +66,7 @@ define([
                 var $selected;
                 $selected = self.menu_container.get_selected();
                 return $.map($.makeArray($selected), function(item, i) {
-                    return $(item).data('value');
+                    return larch.get_val_for_element($(item));
                 });
             },
             is_blank: function() {

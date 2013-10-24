@@ -1,15 +1,8 @@
 define(['jquery'], function($) {
-
     'use strict';
 
     var larch = {};
 
-    /*
-     * Mapping of CSS class names to corresponding Larch field constructors
-     * This is used to infer what type of field to instatiate based on
-     * a DOM element's CSS class. Use larch.register_type to add an
-     * entry to this object.
-     */
     var field_constructors = {};
 
     /*
@@ -31,7 +24,7 @@ define(['jquery'], function($) {
      * JSON. If no options exist, an empty object is returned.
      * This is intended as a convenience for defining simple options directly
      * in the template markup. Because these options are parsed as JSON,
-     * they cannot include things like functions, etc.
+     * they cannot include functions, etc, so this approach is limited.
      */
     larch.get_options_for_element = function($e) {
         return $e.data('options') || {};
@@ -41,6 +34,8 @@ define(['jquery'], function($) {
      * Given a jQuery element $e that represents a single field, returns
      * the constructor needed to instantiate a corresponding Larch field.
      * Returns undefined if a suitable constructor is not found.
+     * If the element has multiple CSS classes that correspond to Larch
+     * field constructors, than the first constructor found will be returned.
      */
     larch.get_constructor_for_element = function($e) {
         var css_classes, i, constructor;
@@ -57,7 +52,9 @@ define(['jquery'], function($) {
      * Instantiate a new Larch field. The constructor that's used is determined
      * by inspecting the CSS class names on the jQuery object options.$e or 
      * $(options.selector).
-     * options are passed through to the constructor
+     * options are merged into the result of calling larch.get_options_for_element 
+     * on the options.$e or $(options.selector) element, and passed through
+     * to the constructor.
      */
     larch.new_instance = function(options) {
         var $e, o, constructor;
@@ -68,23 +65,35 @@ define(['jquery'], function($) {
         return new constructor(o);
     };
 
+    /*
+     * Given a jQuery element $e that represents a single field or a component
+     * within a field (like a menu item, label, etc), return a string to use
+     * as that element's display text. This will be the element's 'display' data
+     * if present, otherwise the result of calling .text() on $e.
+     */
     larch.get_display_for_element = function($e) {
         var text;
-        text = $e.data('text');
+        text = $e.data('display');
         if (!text) {
             text = $e.text();
         }
         return text;
     };
 
+    /*
+     * Return a value that is ssociated with a component represented by
+     * jQuery object $e. This is a convenience for retrieving values
+     * associated with Larch select options, autocomplete items, etc.
+     */
     larch.get_val_for_element = function($e) {
         return $e.data('value');
     };
 
     /*
-     * Holds css class names that are common accross Larch components
+     * Holds css class names that are common accross Larch components.
      */
     larch.markup = {
+        // components
         LARCH:        'larch',
         CHECKBOX:     'larch-checkbox',
         RADIO:        'larch-radio',
@@ -101,6 +110,7 @@ define(['jquery'], function($) {
         AUTOCOMPLETE: 'autocomplete',
         FORM_SUBMIT:  'larch-form-submit',
 
+        // states
         INSTATIATED:  'state-instatiated',
         FOCUS:        'state-focus',
         CURRENT:      'state-current',
@@ -114,7 +124,7 @@ define(['jquery'], function($) {
     };
 
     /*
-     * Holds custom event type names that are common across Larch components
+     * Holds custom event type names that are common across Larch components.
      */
     larch.event_types = {
         OPEN:               'larch-event-open',
@@ -125,7 +135,7 @@ define(['jquery'], function($) {
     };
 
     /*
-     * Holds key codes of non-alphanumeric keys
+     * Holds key codes of non-alphanumeric keys.
      */
     larch.key_codes = {
         BACKSPACE: 8,
@@ -157,7 +167,7 @@ define(['jquery'], function($) {
     };
 
     /*
-     *
+     * Holds possible Larch field orientations.
      */
     larch.orientations = {
         VERTICAL:   'vertical',
@@ -189,9 +199,14 @@ define(['jquery'], function($) {
         }
     };
 
+    /*
+     * Provides very basic interpolation on a string str,
+     * replacing % characters with values (in order) from
+     * the array args.
+     */
     larch.interpolate_str = function(str, args) {
         var i;
-        if (args) {
+        if (args && args.length) {
             for (i = 0; i < args.length; i += 1) {
                 str = str.replace('%', args[i]);
             }

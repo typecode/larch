@@ -15,6 +15,8 @@ define([
     /*
      * Abstract field used as the base class for all Larch field types.
      * This is only used internally to implement concrete field types.
+     * Provides a lot of the core field-level management of validation,
+     * extensions, tooltips, focus, etc.
      */
     var BaseField = function(options) {
 
@@ -249,7 +251,7 @@ define([
             },
             /*
              * Checks to see if the field is currently in a valid state or not
-             * This function does not actually 'validate' the field.
+             * This does not actually 'validate' the field.
              */
             is_valid: function() {
                 return self.$e.hasClass(larch.markup.INVALID) ? false : true;

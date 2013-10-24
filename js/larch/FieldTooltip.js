@@ -25,14 +25,6 @@ define([
      */
     var FieldTooltip = function(options) {
 
-        var tt_markup = {
-            DEFAULT_TIP:  'default-tip',
-            ERRORS:       'errors',
-
-            SHOW_DEFAULT: 'state-show-default',
-            SHOW_ERRORS:  'state-show-errors'
-        };
-
         var o, self, internal, elements, fn, handlers;
 
         o = $.extend({
@@ -48,8 +40,8 @@ define([
         };
 
         elements = {
-            default_tip: internal.$e.children('.' + tt_markup.DEFAULT_TIP),
-            errors: internal.$e.children('.' + tt_markup.ERRORS)
+            default_tip: internal.$e.children('.' + FieldTooltip.markup.DEFAULT_TIP),
+            errors: internal.$e.children('.' + FieldTooltip.markup.ERRORS)
         };
 
         fn = {
@@ -85,7 +77,7 @@ define([
                     self.set_default_text(text);
                 }
                 if ($.trim(elements.default_tip.text())) {
-                    internal.$e.addClass(tt_markup.SHOW_DEFAULT).removeClass(tt_markup.SHOW_ERRORS);
+                    internal.$e.addClass(FieldTooltip.markup.SHOW_DEFAULT).removeClass(FieldTooltip.markup.SHOW_ERRORS);
                 } else {
                     self.hide();
                 }
@@ -96,14 +88,14 @@ define([
                     self.set_error_text(text);
                 }
                 if ($.trim(elements.errors.text())) {
-                    internal.$e.addClass(tt_markup.SHOW_ERRORS).removeClass(tt_markup.SHOW_DEFAULT);
+                    internal.$e.addClass(FieldTooltip.markup.SHOW_ERRORS).removeClass(FieldTooltip.markup.SHOW_DEFAULT);
                 } else {
                     self.hide();
                 }
                 return self;
             },
             hide: function() {
-                internal.$e.removeClass(tt_markup.SHOW_DEFAULT + ' ' + tt_markup.SHOW_ERRORS);
+                internal.$e.removeClass(FieldTooltip.markup.SHOW_DEFAULT + ' ' + FieldTooltip.markup.SHOW_ERRORS);
                 return self;
             }
         };
@@ -118,6 +110,14 @@ define([
 
         fn.init();
 
+    };
+
+    FieldTooltip.markup = {
+        DEFAULT_TIP:  'default-tip',
+        ERRORS:       'errors',
+
+        SHOW_DEFAULT: 'state-show-default',
+        SHOW_ERRORS:  'state-show-errors'
     };
 
     return FieldTooltip;
