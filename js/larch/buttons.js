@@ -8,11 +8,17 @@ define([
 
     var buttons = {};
 
+    /*
+     * Holds css class names that are common accross buttons.
+     */
     buttons.markup = {
         ACTION: 'action',
         DISABLED: larch.markup.DISABLED
     };
 
+    /*
+     * Set enabled state of a button represented by jQuery object $btn.
+     */
     buttons.set_enabled = function($btn, is_enabled) {
         var was_enabled;
         was_enabled = !($btn.hasClass(buttons.markup.DISABLED));
@@ -26,6 +32,9 @@ define([
         }
     };
 
+    /*
+     * Set call to action state of a button represented by jQuery object $btn.
+     */
     buttons.set_call_to_action = function($btn, is_ca) {
         var was_ca;
         was_ca = $btn.hasClass(buttons.markup.ACTION);

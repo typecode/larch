@@ -8,7 +8,7 @@ define([
 ], function(
     $,
     larch,
-    _library,
+    library,
     validation,
     buttons,
     FieldTooltip) {
@@ -249,7 +249,7 @@ define([
                 // error messages, or '__all__' for errors that are not field-specific.
                 // Right now, this is actually not always the case, sometimes
                 // the server returns an errors object that does not follow that format,
-                // such as jsut a string representing an exception message.
+                // such as just a string representing an exception message.
                 t = typeof errors;
                 if (t == 'object') {
 
@@ -293,12 +293,10 @@ define([
                 var invalid_fields = [];
                 $.each(internal.fields, function(name, field) {
                     if (!field.is_valid()) {
-                        invalid_fields.push(field);
+                        field.focus();
+                        return false;
                     }
                 });
-                if (invalid_fields.length) {
-                    invalid_fields[0].focus();
-                }
                 return self;
             },
 

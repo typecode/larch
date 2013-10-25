@@ -8,17 +8,26 @@ define([
 
     var tags = {};
 
+    /*
+     * Holds possible tag modes.
+     */
     tags.modes = {
         DISMISSIBLE: 'dismissible',
         TOGGLABLE:   'toggler'
     };
 
+    /*
+     * Holds css class names that are common accross tags.
+     */
     tags.markup = {
         TAG:        'tag',
         DISPLAY:    'tag-' + larch.markup.DISPLAY,
         CONTROL:    'tag-' + larch.markup.CONTROL
     };
 
+    /*
+     * Generate a string of HTML representing a tag element.
+     */
     tags.create_dom = function(text, mode) {
         var buf;
         if ($.isArray(text)) {
@@ -34,6 +43,10 @@ define([
                '</span>';
     };
 
+    /*
+     * Remove a tag, represented by jQuery object $tag, from the DOM
+     * and destroy it. callback is triggered once the tag has been removed.
+     */
     tags.remove_tag = function($tag, callback) {
         $tag.fadeOut(200, function() {
             $tag.remove();

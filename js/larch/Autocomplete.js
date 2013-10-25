@@ -179,10 +179,7 @@ define([
                 $items.each(function() {
                     var $it, text;
                     $it = $(this);
-                    text = $it.data('text');
-                    if (!text) {
-                        text = $it.text();
-                    }
+                    text = larch.get_display_for_element($it);
                     if (text && text.toLowerCase() == lowercase_val) {
                         $item = $it;
                         return false;
@@ -226,7 +223,7 @@ define([
             doc_click: function(e, d) {
                 var self_dom;
                 self_dom = internal.field.$e[0];
-                if (! (self_dom == e.target || $.contains(self_dom, e.target))) {
+                if (!(self_dom == e.target || $.contains(self_dom, e.target))) {
                     internal.menu_container.close();
                 }
             },

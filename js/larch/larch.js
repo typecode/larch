@@ -124,7 +124,7 @@ define(['jquery'], function($) {
     };
 
     /*
-     * Holds custom event type names that are common across Larch components.
+     * Holds event type names that are common across Larch components.
      */
     larch.event_types = {
         OPEN:               'larch-event-open',
