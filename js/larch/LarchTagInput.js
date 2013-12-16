@@ -1,12 +1,10 @@
 define([
     'jquery',
-    'NIseed',
-    'larch/core',
+    'larch',
     'larch/tags',
     'larch/LarchInput'
 ], function(
     $,
-    _seed,
     larch,
     tags,
     LarchInput) {

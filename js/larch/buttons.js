@@ -1,6 +1,6 @@
 define([
     'jquery',
-    'larch/core'
+    'larch'
 ], function(
     $,
     larch) {

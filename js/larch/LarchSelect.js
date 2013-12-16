@@ -1,6 +1,6 @@
 define([
     'jquery',
-    'larch/core',
+    'larch',
     'larch/tags',
     'larch/BaseField',
     'larch/validation',
@@ -27,7 +27,7 @@ define([
      *         <span class='display'></span>
      *     </div>
      *     <div class='menu'>
-     *         <span class='item' data-value=''>...</span> 
+     *         <span class='item' data-value=''>...</span>
      *     </div>
      * </div>
      */
