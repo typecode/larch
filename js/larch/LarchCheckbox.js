@@ -4,7 +4,6 @@ define([
     'larch/BaseField'
 ], function(
     $,
-    _seed,
     larch,
     BaseField) {
     'use strict';
