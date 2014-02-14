@@ -112,12 +112,6 @@
   position: relative;
   cursor: pointer;
 }
-.larch.larch-select > .menu .item.state-current {
-  display: none;
-}
-.multi.larch.larch-select > .menu .item.state-current {
-  display: block;
-}
 .larch.larch-checkbox,
 .larch.larch-radio {
   cursor: pointer;
