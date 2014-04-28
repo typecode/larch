@@ -320,6 +320,9 @@ define([
                 }
                 return self;
             },
+            get_submit_btn: function() {
+                return elements.submit_btn;
+            },
 
             get_field: function(name) {
                 return internal.fields[name];
@@ -436,6 +439,7 @@ define([
         self.focus_first_field = fn.focus_first_field;
         self.focus_first_invalid_field = fn.focus_first_invalid_field;
         self.set_submit_btn_text = fn.set_submit_btn_text;
+        self.get_submit_btn = fn.get_submit_btn;
 
         self.get_field = fn.get_field;
         self.get_fields = fn.get_fields;
