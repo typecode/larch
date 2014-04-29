@@ -382,9 +382,6 @@ define([
                     url: self.get_post_url(),
                     data: post_data,
                     dataType: 'json',
-                    beforeSend: ($.isFunction(o.on_before_send) ? function(xhr, settings) {
-                        o.on_before_send.apply(self, arguments);
-                    } : null),
                     success: function(d, ts, xhr) {
                         internal.response_data = d;
 
@@ -401,14 +398,22 @@ define([
 
                         o.on_success.apply(self, arguments);
                     },
-                    error: ($.isFunction(o.on_error) ? function(xhr, ts, err) {
-                        o.on_error.apply(self, arguments);
-                    } : null),
                     complete: function(xhr, ts) {
                         internal.xhrobject = null;
                         o.on_complete.apply(self, arguments);
                     }
                 };
+
+                if ($.isFunction(o.on_before_send)) {
+                    settings.beforeSend = function(xhr, settings) {
+                        o.on_before_send.apply(self, arguments);
+                    };
+                }
+                if ($.isFunction(o.on_error)) {
+                    settings.error = function(xhr, ts, err) {
+                        o.on_error.apply(self, arguments);
+                    };
+                }
 
                 internal.xhrobject = $.ajax(settings);
 
