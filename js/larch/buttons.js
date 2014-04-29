@@ -48,6 +48,27 @@ define([
         }
     };
 
+    /*
+     * Creates an event handler function that only invokes handler if event target
+     * is enabled. Optionally invoke when_disabled_handler if the evnet target is
+     * disabled.
+     *
+     * Usage:
+     * $btn.on('click', buttons.disabled_handler(function(e, d) {...}));
+     */
+    buttons.disabled_handler = function(handler, when_disabled_handler) {
+        return function(e, d) {
+            if ($(this).hasClass(buttons.markup.DISABLED)) {
+                if ($.isFunction(when_disabled_handler)) {
+                    return when_disabled_handler.apply(this, arguments);
+                }
+                e.preventDefault();
+            } else {
+                return handler.apply(this, arguments);
+            }
+        }
+    };
+
     return buttons;
 
 });
