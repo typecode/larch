@@ -41,6 +41,7 @@ define([
             post_url: null,
             handle_fields: function(fields) {},
             broker_post_data: null, // function(data, fields) {} or [function, function, ...]
+            on_before_send: function(xhr, settings) {},
             on_success: function(d) {},
             on_error: function(xhr, ts, err) {},
             on_complete: function() {}
@@ -378,6 +379,9 @@ define([
                     url: self.get_post_url(),
                     data: post_data,
                     dataType: 'json',
+                    beforeSend: function(xhr, settings) {
+                        o.on_before_send.apply(self, arguments);
+                    },
                     success: function(d, ts, xhr) {
                         internal.response_data = d;
 
