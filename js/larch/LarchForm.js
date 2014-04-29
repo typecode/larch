@@ -33,7 +33,7 @@ define([
             app: null,
             $e: null,
             selector: '',
-            warn_missing_csrf_token: true,
+            warn_missing_csrf_token: false,
             enter_key_submit: false,
             validators: {
                 '__all__': {}
@@ -41,9 +41,10 @@ define([
             post_url: null,
             handle_fields: function(fields) {},
             broker_post_data: null, // function(data, fields) {} or [function, function, ...]
-            on_before_send: function(xhr, settings) {},
+            on_post: function(post_data) {},
+            on_before_send: null, // function(xhr, settings) {}
             on_success: function(d) {},
-            on_error: function(xhr, ts, err) {},
+            on_error: null, // function(xhr, ts, err) {}
             on_complete: function() {}
         }, options);
 
@@ -362,7 +363,7 @@ define([
                 return self.$e.attr('action');
             },
             post: function() {
-                var post_data;
+                var post_data, settings;
 
                 if (internal.xhrobject) {
                     internal.xhrobject.abort();
@@ -374,14 +375,16 @@ define([
                 console.log('LarchForm: saving form');
                 console.log(post_data);
 
-                internal.xhrobject = $.ajax({
+                o.on_post.apply(self, [post_data]);
+
+                settings = {
                     type: 'POST',
                     url: self.get_post_url(),
                     data: post_data,
                     dataType: 'json',
-                    beforeSend: function(xhr, settings) {
+                    beforeSend: ($.isFunction(o.on_before_send) ? function(xhr, settings) {
                         o.on_before_send.apply(self, arguments);
-                    },
+                    } : null),
                     success: function(d, ts, xhr) {
                         internal.response_data = d;
 
@@ -398,14 +401,16 @@ define([
 
                         o.on_success.apply(self, arguments);
                     },
-                    error: function(xhr, ts, err) {
+                    error: ($.isFunction(o.on_error) ? function(xhr, ts, err) {
                         o.on_error.apply(self, arguments);
-                    },
+                    } : null),
                     complete: function(xhr, ts) {
                         internal.xhrobject = null;
                         o.on_complete.apply(self, arguments);
                     }
-                });
+                };
+
+                internal.xhrobject = $.ajax(settings);
 
                 return self;
             },
