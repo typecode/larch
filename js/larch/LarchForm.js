@@ -375,7 +375,11 @@ define([
                 console.log('LarchForm: saving form');
                 console.log(post_data);
 
-                o.on_post.apply(self, [post_data]);
+                if ($.isFunction(o.on_post)) {
+                    if (o.on_post.apply(self, [post_data]) === false) {
+                        return self;
+                    }
+                }
 
                 settings = {
                     type: 'POST',
