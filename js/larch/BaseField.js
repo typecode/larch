@@ -53,10 +53,7 @@ define([
                 self.$e.on(larch.event_types.RESET, handlers.reset);
 
                 name = self.$e.attr('data-name');
-                if (!name) {
-                    self.name = '(annonymous)';
-                }
-                self.name = name;
+                self.name = name || '(annonymous)';
 
                 fn.init_tooltip();
                 fn.update_validation_action_handlers(fn.get_validation_state());
@@ -127,6 +124,9 @@ define([
             },
             is_blank: function() {
                 return $.trim(self.get_val()) ? false : true;
+            },
+            requires_formdata: function() {
+                return false;
             },
 
             init_tooltip: function() {
@@ -300,6 +300,7 @@ define([
         self.focus = fn.focus;
         self.has_focus = fn.has_focus;
         self.is_blank = fn.is_blank;
+        self.requires_formdata = fn.requires_formdata;
 
         self.add_validator = fn.add_validator;
         self.remove_validator = fn.remove_validator;

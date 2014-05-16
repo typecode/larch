@@ -80,11 +80,17 @@ define([
 
                 // Discover fields
                 self.$e.find('.' + larch.markup.LARCH + '[data-name]').each(function() {
-                    var $field;
+                    var $field, name, instance;
                     $field = $(this);
-                    internal.fields[$field.attr('data-name')] = larch.new_instance({
+                    name = $field.attr('data-name');
+                    instance = larch.new_instance({
                         $e: $field
                     });
+                    if (!instance) {
+                        console.warn('LarchForm: unsupported field: ', name);
+                        return true;
+                    }
+                    internal.fields[name] = instance;
                 });
 
                 // Add field validators to the fields
@@ -362,8 +368,43 @@ define([
                 }
                 return self.$e.attr('action');
             },
+            requires_formdata: function() {
+                var yes = false;
+                $.each(internal.fields, function(name, field) {
+                    if (field.requires_formdata()) {
+                        yes = true;
+                        return false;
+                    }
+                });
+                return yes;
+            },
+            build_formdata: function(post_data) {
+                var form_data;
+
+                form_data = new FormData();
+
+                $.each(post_data, function(name, val) {
+                    if ($.isArray(val)) {
+                        $.each(val, function(i, v) {
+                            if (v instanceof File) {
+                                form_data.append(name, v, v.name);
+                            } else {
+                                form_data.append(name, v);
+                            }
+                        });
+                    } else {
+                        if (val instanceof File) {
+                            form_data.append(name, val, val.name);
+                        } else {
+                            form_data.append(name, val);
+                        }
+                    }
+                });
+
+                return form_data;
+            },
             post: function() {
-                var post_data, settings;
+                var  requires_formdata, post_data, settings;
 
                 if (internal.xhrobject) {
                     internal.xhrobject.abort();
@@ -381,10 +422,12 @@ define([
                     }
                 }
 
+                requires_formdata = self.requires_formdata();
+
                 settings = {
                     type: 'POST',
                     url: self.get_post_url(),
-                    data: post_data,
+                    data: requires_formdata ? fn.build_formdata(post_data) : post_data,
                     dataType: 'json',
                     success: function(d, ts, xhr) {
                         internal.response_data = d;
@@ -407,6 +450,11 @@ define([
                         o.on_complete.apply(self, arguments);
                     }
                 };
+
+                if (requires_formdata) {
+                    settings.processData = false;
+                    settings.contentType = false;
+                }
 
                 if ($.isFunction(o.on_before_send)) {
                     settings.beforeSend = function(xhr, settings) {
@@ -465,6 +513,7 @@ define([
         self.get_data_brokers = fn.get_data_brokers;
         self.get_post_data = fn.get_post_data;
         self.get_post_url = fn.get_post_url;
+        self.requires_formdata = fn.requires_formdata;
         self.post = fn.post;
         self.get_response_data = fn.get_response_data;
 

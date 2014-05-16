@@ -62,7 +62,7 @@ define(['jquery'], function($) {
         options.$e = $e;
         o = $.extend(larch.get_options_for_element($e), options);
         constructor = larch.get_constructor_for_element($e);
-        return new constructor(o);
+        return constructor ? new constructor(o) : null;
     };
 
     /*

@@ -15,6 +15,7 @@ define([
     'larch/LarchCheckbox',
     'larch/LarchSelect',
     'larch/LarchHidden',
+    'larch/LarchFile',
 
     // extensions
     'larch/Autocomplete'
@@ -26,6 +27,8 @@ define([
     LarchCheckbox,
     LarchSelect,
     LarchHidden,
+    LarchFile,
+
     Autocomplete) {
     'use strict';
 
