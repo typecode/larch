@@ -403,8 +403,8 @@ define([
 
                 return form_data;
             },
-            post: function() {
-                var  requires_formdata, post_data, settings;
+            post: function(callback) {
+                var requires_formdata, post_data, settings;
 
                 if (internal.xhrobject) {
                     internal.xhrobject.abort();
@@ -448,6 +448,9 @@ define([
                     complete: function(xhr, ts) {
                         internal.xhrobject = null;
                         o.on_complete.apply(self, arguments);
+                        if ($.isFunction(callback)) {
+                            callback.apply(self, [internal.response_data]);
+                        }
                     }
                 };
 
