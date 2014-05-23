@@ -28,6 +28,7 @@ define([
         };
 
         elements = {
+            preview: self.$e.find('.preview'),
             input: self.$e.children('.' + larch.markup.CONTROL).children('input[type=file]'),
             clear: self.$e.find('.clear-control')
         };
@@ -46,8 +47,21 @@ define([
             clear: function() {
                 elements.input.wrap('<form>').closest('form')[0].reset();
                 elements.input.unwrap();
+                self.$e.removeClass(LarchFile.markup.FULL);
                 internal.send_clear = true;
                 return self;
+            },
+            render_preview: function(file) {
+                var reader;
+                if (file.type.match(/image.*/)) {
+                    reader = new FileReader();
+                    reader.onload = function(e) {
+                        elements.preview.css({
+                            backgroundImage: 'url(' + e.target.result + ')'
+                        });
+                    };
+                    reader.readAsDataURL(file);
+                }
             },
 
             set_val: function(val, silent) {
@@ -64,6 +78,9 @@ define([
                 return internal.send_clear ? LarchFile.clear_val : null;
             },
             is_blank: function() {
+                if (self.$e.hasClass(LarchFile.markup.FULL)) {
+                    return false;
+                }
                 return elements.input[0].files.length ? false : true;
             },
 
@@ -84,6 +101,8 @@ define([
         handlers = {
             change: function(e, d) {
                 if (e.target.files && e.target.files.length) {
+                    fn.render_preview(e.target.files[0]);
+                    self.$e.addClass(LarchFile.markup.FULL);
                     internal.send_clear = false;
                 }
             },
@@ -110,6 +129,10 @@ define([
     });
 
     LarchFile.clear_val = '(clear)';
+
+    LarchFile.markup = {
+        FULL: 'state-full'
+    };
 
     return LarchFile;
 });
